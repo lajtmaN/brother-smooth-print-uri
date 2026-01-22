@@ -10,14 +10,34 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run build && npm test"
   },
   "repository": {
     "type": "git",
-    "url": "github.com/lajtmaN/brother-smooth-print-uri"
+    "url": "git+https://github.com/lajtmaN/brother-smooth-print-uri.git"
   },
+  "bugs": {
+    "url": "https://github.com/lajtmaN/brother-smooth-print-uri/issues"
+  },
+  "homepage": "https://github.com/lajtmaN/brother-smooth-print-uri#readme",
+  "keywords": [
+    "brother",
+    "printer",
+    "label",
+    "smooth-print",
+    "uri",
+    "generator",
+    "printing"
+  ],
   "author": "Tim Gjøderum",
   "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
