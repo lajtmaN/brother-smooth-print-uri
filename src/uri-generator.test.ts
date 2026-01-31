@@ -1,3 +1,4 @@
+import { BrotherArgs } from './types';
 import { generatePrintUri } from "./uri-generator";
 
 describe("generatePrintUri", () => {
@@ -8,7 +9,7 @@ describe("generatePrintUri", () => {
       filename: "https://example.com/Simple.lbx",
       size: "https://example.com/26x76.bin",
       ...args,
-    });
+    } as BrotherArgs);
   };
 
   test("should return a minimal URL with the correct protocol and template", () => {
