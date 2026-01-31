@@ -2,11 +2,34 @@
 
 This package uses **npm Trusted Publishers** for secure publishing without managing long-lived tokens.
 
-## One-Time Setup
+## First-Time Publishing (Required Before Trusted Publishers Setup)
+
+Since the package doesn't exist on npm yet, you need to publish it manually for the first time:
+
+### Step 1: Initial Manual Publish
+
+```bash
+# Login to npm (you'll need your npm account credentials)
+npm login
+
+# Build and test the package
+npm run build
+npm test
+
+# Publish the initial version (1.0.0)
+npm publish --access public
+
+# Push any changes
+git push --follow-tags
+```
+
+After this initial publish, the package will exist on npm and you can configure Trusted Publishers.
+
+## One-Time Setup (After Initial Publish)
 
 ### 1. Configure npm Trusted Publisher
 
-Before you can publish using the GitHub Action, you need to configure the Trusted Publisher on npm:
+Once the package exists on npm, configure the Trusted Publisher:
 
 1. Go to https://www.npmjs.com/package/brother-smooth-print-uri/access
 2. Scroll to the **"Trusted Publisher"** section
@@ -30,9 +53,9 @@ The workflow is already configured with the required permissions:
 
 No additional GitHub secrets or tokens are needed!
 
-## How to Publish
+## How to Publish (After Setup)
 
-Once the Trusted Publisher is configured on npm, publishing is simple:
+Once the Trusted Publisher is configured on npm, all future publishing is simple:
 
 1. Go to the **Actions** tab in the GitHub repository
 2. Select the **"Publish to npm"** workflow
