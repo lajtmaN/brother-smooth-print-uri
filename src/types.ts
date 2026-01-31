@@ -1,17 +1,19 @@
 /**
- * Brother Smooth Print arguments as defined here: https://support.brother.com/g/s/es/dev/en/specific/smooth_print/index.html?c=eu_ot&lang=en&comple=on&redirect=on
+ * Base interface for Brother Smooth Print arguments as defined here: https://support.brother.com/g/s/es/dev/en/specific/smooth_print/index.html?c=eu_ot&lang=en&comple=on&redirect=on
  */
-export interface BrotherArgs {
+export interface BrotherArgsBase {
   /**
    * Single layout template file (.lbx)
+   * Required unless fileattach is provided. Exactly one of filename or fileattach must be provided.
    * @example https://example.com/Simple.lbx
    */
-  filename: string;
+  filename?: string;
   /**
    * Media settings file (bin)
+   * Required unless sizeattach is provided. Exactly one of size or sizeattach must be provided.
    * @example https://example.com/26x76.bin
    */
-  size: string;
+  size?: string;
 
   /**
    * Number of copies to print
@@ -100,10 +102,12 @@ export interface BrotherArgs {
   /**
    * Set the base64 data as a print file to attach to a URL scheme.
    * (single layout)
+   * Required unless filename is provided. Exactly one of filename or fileattach must be provided.
    */
   fileattach?: string;
   /**
    * Set the base64 data as a media information file to attach to a URL scheme.
+   * Required unless size is provided. Exactly one of size or sizeattach must be provided.
    */
   sizeattach?: string;
   /**
@@ -118,3 +122,29 @@ export interface BrotherArgs {
    */
   forceStretchPrintableArea?: boolean;
 }
+
+/**
+ * Helper type for file source - exactly one of filename or fileattach
+ */
+type FileSource = 
+  | (Required<Pick<BrotherArgsBase, 'filename'>> & { fileattach?: never })
+  | (Required<Pick<BrotherArgsBase, 'fileattach'>> & { filename?: never });
+
+/**
+ * Helper type for size source - exactly one of size or sizeattach
+ */
+type SizeSource = 
+  | (Required<Pick<BrotherArgsBase, 'size'>> & { sizeattach?: never })
+  | (Required<Pick<BrotherArgsBase, 'sizeattach'>> & { size?: never });
+
+/**
+ * Brother Smooth Print arguments with exactly one of filename or fileattach,
+ * and exactly one of size or sizeattach.
+ * 
+ * This type enforces at compile-time that you must provide:
+ * - Exactly one file source (filename OR fileattach)
+ * - Exactly one size source (size OR sizeattach)
+ */
+export type BrotherArgs = Omit<BrotherArgsBase, 'filename' | 'fileattach' | 'size' | 'sizeattach'> & 
+  FileSource & 
+  SizeSource;

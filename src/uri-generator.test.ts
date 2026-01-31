@@ -1,3 +1,4 @@
+import { BrotherArgs } from './types';
 import { generatePrintUri } from "./uri-generator";
 
 describe("generatePrintUri", () => {
@@ -8,7 +9,7 @@ describe("generatePrintUri", () => {
       filename: "https://example.com/Simple.lbx",
       size: "https://example.com/26x76.bin",
       ...args,
-    });
+    } as BrotherArgs);
   };
 
   test("should return a minimal URL with the correct protocol and template", () => {
@@ -48,5 +49,85 @@ describe("generatePrintUri", () => {
   test("should ignore undefined arguments", () => {
     const result = generateTestUri({ copies: undefined });
     expect(result.searchParams.has("copies")).toBe(false);
+  });
+
+  describe("validation", () => {
+    describe("filename/fileattach validation", () => {
+      test("should throw error when neither filename nor fileattach is provided", () => {
+        expect(() => {
+          generatePrintUri({
+            size: "https://example.com/26x76.bin",
+          } as unknown as BrotherArgs);
+        }).toThrow("Either 'filename' or 'fileattach' must be provided");
+      });
+
+      test("should throw error when both filename and fileattach are provided", () => {
+        expect(() => {
+          generatePrintUri({
+            filename: "https://example.com/Simple.lbx",
+            fileattach: "base64data",
+            size: "https://example.com/26x76.bin",
+          } as unknown as BrotherArgs);
+        }).toThrow("Only one of 'filename' or 'fileattach' can be provided, not both");
+      });
+    });
+
+    describe("size/sizeattach validation", () => {
+      test("should throw error when neither size nor sizeattach is provided", () => {
+        expect(() => {
+          generatePrintUri({
+            filename: "https://example.com/Simple.lbx",
+          } as unknown as BrotherArgs);
+        }).toThrow("Either 'size' or 'sizeattach' must be provided");
+      });
+
+      test("should throw error when both size and sizeattach are provided", () => {
+        expect(() => {
+          generatePrintUri({
+            filename: "https://example.com/Simple.lbx",
+            size: "https://example.com/26x76.bin",
+            sizeattach: "base64data",
+          } as unknown as BrotherArgs);
+        }).toThrow("Only one of 'size' or 'sizeattach' can be provided, not both");
+      });
+    });
+
+    describe("valid combinations", () => {
+      test("should accept filename + size", () => {
+        expect(() => {
+          generatePrintUri({
+            filename: "https://example.com/Simple.lbx",
+            size: "https://example.com/26x76.bin",
+          });
+        }).not.toThrow();
+      });
+
+      test("should accept filename + sizeattach", () => {
+        expect(() => {
+          generatePrintUri({
+            filename: "https://example.com/Simple.lbx",
+            sizeattach: "base64EncodedBinData",
+          });
+        }).not.toThrow();
+      });
+
+      test("should accept fileattach + size", () => {
+        expect(() => {
+          generatePrintUri({
+            fileattach: "base64EncodedLbxData",
+            size: "https://example.com/26x76.bin",
+          });
+        }).not.toThrow();
+      });
+
+      test("should accept fileattach + sizeattach", () => {
+        expect(() => {
+          generatePrintUri({
+            fileattach: "base64EncodedLbxData",
+            sizeattach: "base64EncodedBinData",
+          });
+        }).not.toThrow();
+      });
+    });
   });
 });
