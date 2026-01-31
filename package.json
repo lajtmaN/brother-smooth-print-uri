@@ -1,6 +1,6 @@
 {
   "name": "brother-smooth-print-uri",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "URI Generator for Brother Smooth Print",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
