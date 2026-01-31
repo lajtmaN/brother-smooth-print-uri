@@ -2,6 +2,15 @@
 
 This package uses **npm Trusted Publishers** for secure publishing without managing long-lived tokens.
 
+## Prerequisites
+
+npm Trusted Publishers requires npm CLI version 11.5.1 or later. If you're publishing manually, ensure you have the latest npm version:
+
+```bash
+npm install -g npm@latest
+npm --version  # Should be 11.5.1 or higher
+```
+
 ## First-Time Publishing (Required Before Trusted Publishers Setup)
 
 Since the package doesn't exist on npm yet, you need to publish it manually for the first time:
