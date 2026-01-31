@@ -49,11 +49,9 @@ jobs:
       - name: Bump version
         run: npm version ${{ github.event.inputs.release-type }} -m "chore: bump version to %s [skip ci]"
 
-      # Note: npm publish will run prepublishOnly (build + test) again to ensure the published package is built correctly
+      # Publish using npm Trusted Publishers (OIDC) - no NPM_TOKEN needed
       - name: Publish to npm
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push version bump
         run: git push --follow-tags
