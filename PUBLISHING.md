@@ -4,11 +4,22 @@ This package uses **npm Trusted Publishers** for secure publishing without manag
 
 ## Prerequisites
 
-npm Trusted Publishers requires npm CLI version 11.5.1 or later. If you're publishing manually, ensure you have the latest npm version:
+npm Trusted Publishers requires npm CLI version 11.5.1 or later. 
+
+**For GitHub Actions:** The workflow is configured to use Node.js 24, which includes npm 11.6.2 by default. No additional setup is needed.
+
+**For manual publishing:** If you're publishing manually from your local machine, ensure you have Node.js 24+ or npm 11.5.1+:
+
+```bash
+node --version  # Should be 24.x or higher
+npm --version   # Should be 11.5.1 or higher
+```
+
+If you have an older version of npm, you can upgrade it:
 
 ```bash
 npm install -g npm@latest
-npm --version  # Should be 11.5.1 or higher
+npm --version  # Verify it's 11.5.1 or higher
 ```
 
 ## First-Time Publishing (Required Before Trusted Publishers Setup)
